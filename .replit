@@ -55,5 +55,5 @@ localPort = 8000
 externalPort = 8000
 
 [deployment]
-run = ["sh", "-c", "sh -c 'cd web && npm run preview & .venv/bin/python -m uvicorn api.main:app --host 0.0.0.0 --port 8000'"]
-build = ["sh", "-c", "cd web && npm run build"]
+run = ["sh", "-c", "sh -c '.venv/bin/python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 & node server.js'"]
+build = ["sh", "-c", "npm run build"]
