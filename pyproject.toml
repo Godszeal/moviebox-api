@@ -7,7 +7,7 @@ license="Unlicense"
 authors = [
     { name = "smartwa", email = "smartwacaleb@gmail.com" }
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.13"
 classifiers = [
     "License :: OSI Approved :: The Unlicense (Unlicense)",
     "Intended Audience :: Developers",
@@ -16,8 +16,6 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
     "Topic :: Communications :: File Sharing",
 ]
 dependencies = [
@@ -25,6 +23,8 @@ dependencies = [
     "httpx>=0.28.1",
     "pydantic>=2.11.7",
     "throttlebuster>=0.1.10",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
 ]
 
 [project.scripts]
