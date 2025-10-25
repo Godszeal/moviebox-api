@@ -1,4 +1,6 @@
-const API_BASE_URL = '';
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://your-render-backend-url.onrender.com'
+  : '';
 
 class ApiService {
   async request(endpoint) {
