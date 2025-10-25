@@ -20,9 +20,8 @@ from moviebox_api.models import SearchResultsItem
 
 app = FastAPI(
     title="MovieBox API",
-    description="Unofficial API for moviebox.ph - Search, discover, and access movies & TV series",
-    version="1.0.0",
-    creator="God's Zeal"
+    description="Unofficial API for moviebox.ph - Search, discover, and access movies & TV series. Created by God's Zeal",
+    version="1.0.0"
 )
 
 app.add_middleware(

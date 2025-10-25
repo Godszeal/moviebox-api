@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieBox API Explorer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+            border-radius: 16px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #e0e0ff;
+        }
+
+        .creator-badge {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: #10b981;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .back-button:hover {
+            background: #059669;
+        }
+
+        .endpoint-section {
+            margin-bottom: 2rem;
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid #333;
+        }
+
+        .endpoint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .endpoint-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .method-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .method-get {
+            background: #10b981;
+        }
+
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            color: #a0a0a0;
+        }
+
+        .endpoint-description {
+            margin-bottom: 1.5rem;
+            color: #e0e0e0;
+        }
+
+        .param-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .param-group h4 {
+            margin-bottom: 0.8rem;
+            color: #7c3aed;
+        }
+
+        .param-input {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+            align-items: center;
+        }
+
+        .param-input label {
+            min-width: 120px;
+            color: #a0a0a0;
+        }
+
+        .param-input input,
+        .param-input select {
+            flex: 1;
+            padding: 0.6rem;
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .try-button {
+            padding: 0.8rem 2rem;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .try-button:hover {
+            background: #6d28d9;
+        }
+
+        .response-section {
+            margin-top: 1.5rem;
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .response-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: #10b981;
+        }
+
+        .status-error {
+            background: #ef4444;
+        }
+
+        .response-body {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        .response-body pre {
+            margin: 0;
+            color: #10b981;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+
+        .loading {
+            color: #7c3aed;
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 MovieBox API Explorer</h1>
+            <p>Interactive API Documentation & Testing</p>
+            <div class="creator-badge">Created by God's Zeal</div>
+        </div>
+
+        <a href="/" class="back-button">← Back to Movie Site</a>
+
+        <div id="endpoints"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = window.location.origin;
+
+        const endpoints = [
+            {
+                id: 'search',
+                method: 'GET',
+                path: '/api/search',
+                description: 'Search for movies, TV series, or all content',
+                params: [
+                    { name: 'query', type: 'text', required: true, placeholder: 'e.g., Avatar' },
+                    { name: 'type', type: 'select', options: ['all', 'movie', 'series'], default: 'all' },
+                    { name: 'page', type: 'number', default: 1 },
+                    { name: 'per_page', type: 'number', default: 24 }
+                ]
+            },
+            {
+                id: 'trending',
+                method: 'GET',
+                path: '/api/trending',
+                description: 'Get trending movies and TV series',
+                params: [
+                    { name: 'page', type: 'number', default: 1 },
+                    { name: 'per_page', type: 'number', default: 24 }
+                ]
+            },
+            {
+                id: 'homepage',
+                method: 'GET',
+                path: '/api/homepage',
+                description: 'Get homepage featured content and categories',
+                params: []
+            },
+            {
+                id: 'popular-searches',
+                method: 'GET',
+                path: '/api/popular-searches',
+                description: 'Get popular search terms',
+                params: []
+            },
+            {
+                id: 'movie',
+                method: 'GET',
+                path: '/api/movie/{subject_id}',
+                description: 'Get detailed information about a specific movie',
+                params: [
+                    { name: 'subject_id', type: 'text', required: true, placeholder: 'e.g., tt1630029' }
+                ]
+            },
+            {
+                id: 'series',
+                method: 'GET',
+                path: '/api/series/{subject_id}',
+                description: 'Get detailed information about a specific TV series',
+                params: [
+                    { name: 'subject_id', type: 'text', required: true, placeholder: 'e.g., tt0944947' }
+                ]
+            }
+        ];
+
+        function createEndpointCard(endpoint) {
+            const card = document.createElement('div');
+            card.className = 'endpoint-section';
+            card.id = `endpoint-${endpoint.id}`;
+
+            let paramsHTML = '';
+            if (endpoint.params.length > 0) {
+                paramsHTML = `
+                    <div class="param-group">
+                        <h4>Parameters</h4>
+                        ${endpoint.params.map(param => `
+                            <div class="param-input">
+                                <label>${param.name}${param.required ? ' *' : ''}:</label>
+                                ${param.type === 'select' ? 
+                                    `<select id="${endpoint.id}-${param.name}">
+                                        ${param.options.map(opt => `<option value="${opt}" ${opt === param.default ? 'selected' : ''}>${opt}</option>`).join('')}
+                                    </select>` :
+                                    `<input type="${param.type}" id="${endpoint.id}-${param.name}" 
+                                        placeholder="${param.placeholder || ''}" 
+                                        value="${param.default || ''}">`
+                                }
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            card.innerHTML = `
+                <div class="endpoint-header">
+                    <div class="endpoint-title">
+                        <span class="method-badge method-get">${endpoint.method}</span>
+                        <span class="endpoint-path">${endpoint.path}</span>
+                    </div>
+                </div>
+                <div class="endpoint-description">${endpoint.description}</div>
+                ${paramsHTML}
+                <button class="try-button" onclick="tryEndpoint('${endpoint.id}')">Try It Out</button>
+                <div class="response-section" id="response-${endpoint.id}" style="display: none;"></div>
+            `;
+
+            return card;
+        }
+
+        async function tryEndpoint(endpointId) {
+            const endpoint = endpoints.find(e => e.id === endpointId);
+            const responseSection = document.getElementById(`response-${endpointId}`);
+            
+            responseSection.style.display = 'block';
+            responseSection.innerHTML = '<div class="loading">Loading...</div>';
+
+            const params = {};
+            endpoint.params.forEach(param => {
+                const value = document.getElementById(`${endpointId}-${param.name}`).value;
+                if (value) params[param.name] = value;
+            });
+
+            let url = `${API_BASE_URL}${endpoint.path}`;
+            
+            if (endpoint.path.includes('{subject_id}')) {
+                url = url.replace('{subject_id}', params.subject_id);
+                delete params.subject_id;
+            }
+
+            const queryString = new URLSearchParams(params).toString();
+            if (queryString) url += `?${queryString}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                responseSection.innerHTML = `
+                    <div class="response-header">
+                        <h4>Response</h4>
+                        <span class="response-status ${response.ok ? 'status-success' : 'status-error'}">
+                            ${response.status} ${response.statusText}
+                        </span>
+                    </div>
+                    <div class="response-body">
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                responseSection.innerHTML = `
+                    <div class="response-header">
+                        <h4>Response</h4>
+                        <span class="response-status status-error">Error</span>
+                    </div>
+                    <div class="response-body">
+                        <pre>${JSON.stringify({ error: error.message }, null, 2)}</pre>
+                    </div>
+                `;
+            }
+        }
+
+        const endpointsContainer = document.getElementById('endpoints');
+        endpoints.forEach(endpoint => {
+            endpointsContainer.appendChild(createEndpointCard(endpoint));
+        });
+    </script>
+</body>
+</html>

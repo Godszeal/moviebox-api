@@ -216,6 +216,23 @@ test.py
 *.mpv
 *.srt
 commit-msg*
-*.html
 *.part
 temp/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist-ssr/
+*.local
+
+# Vite
+web/dist/
+
+# Replit
+.replit
+.config/
+.upm/
+.breakpoints

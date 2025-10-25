@@ -1,6 +1,4 @@
-const API_BASE_URL = window.location.origin.includes('localhost')
-  ? 'http://localhost:8000'
-  : `${window.location.origin}`;
+const API_BASE_URL = '';
 
 class ApiService {
   async request(endpoint) {
