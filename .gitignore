@@ -219,6 +219,9 @@ commit-msg*
 *.part
 temp/
 
+# Keep web app HTML files
+!web/*.html
+
 # Node.js
 node_modules/
 npm-debug.log*
